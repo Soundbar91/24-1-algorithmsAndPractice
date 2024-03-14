@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class A {
+    // try - catch 사용해보기
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -11,6 +12,7 @@ public class A {
 
         int T = Integer.parseInt(br.readLine());
 
+//        함수로 처리하기
         while (T-- > 0) {
             HashMap<Integer, Integer> map = new HashMap<>();
             int N = Integer.parseInt(br.readLine());
@@ -24,8 +26,8 @@ public class A {
 
             for (int num : map.keySet()) {
                 int value = map.get(num);
-                if (map.containsKey(num - 1)) result = Math.max(result, value + map.get(num - 1));
-                if (map.containsKey(num + 1)) result = Math.max(result, value + map.get(num + 1));
+                result = Math.max(result, Math.max(value + map.getOrDefault(num - 1, 0),
+                        value + map.getOrDefault(num + 1, 0)));
             }
 
             sb.append(result).append('\n');
