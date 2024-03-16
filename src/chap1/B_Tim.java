@@ -22,7 +22,6 @@ public class B_Tim {
             TimSort(numArr, N);
 
             for (int i = 1; i <= N; i++) sb.append(numArr[i]).append(' ');
-
             sb.append('\n');
         }
 
@@ -35,7 +34,13 @@ public class B_Tim {
             insert(i, Math.min(i + SIZE, n), A);
         }
 
-        // 병합 정렬 구현
+        for (int i = SIZE; i < n; i *= 2) {
+            for (int left = 0; left < n; left += 2 * i) {
+                int mid = left + i - 1;
+                int right = Math.min(left + 2 * i - 1, n - 1);
+                merge(left, mid, right, A);
+            }
+        }
     }
 
     public static void merge(int lo, int mid, int hi, int[] A) {
