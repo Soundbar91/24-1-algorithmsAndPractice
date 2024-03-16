@@ -29,19 +29,30 @@ public class B_Tim {
         br.close();
     }
 
-    public static void TimSort(int[] A, int n) {
-        for (int i = 1; i <= n; i += SIZE) {
-            insert(i, Math.min(i + SIZE, n), A);
-        }
+    public static void TimSort(int lo, int hi, int[] A) {
+        
 
-        for (int i = SIZE; i < n; i *= 2) {
-            for (int left = 0; left < n; left += 2 * i) {
-                int mid = left + i - 1;
-                int right = Math.min(left + 2 * i - 1, n - 1);
-                merge(left, mid, right, A);
-            }
-        }
-    }
+//        for (int i = 1; i <= n; i += SIZE) {
+//            insert(i, Math.min(i + SIZE, n), A);
+//        }
+//
+//        for (int i = SIZE; i < n; i *= 2) {
+//            for (int left = 0; left < n; left += 2 * i) {
+//                int mid = left + i - 1;
+//                int right = Math.min(left + 2 * i - 1, n - 1);
+//                merge(left, mid, right, A);
+//            }
+//        }
+//    }
+//
+//    public static void mergeSort(int lo, int hi, int[] A) {
+//        if (lo < hi) {
+//            int mid = lo + (hi - lo) / 2;
+//            mergeSort(lo, mid, A);
+//            mergeSort(mid + 1, hi, A);
+//            merge(lo, mid, hi, A);
+//        }
+//    }
 
     public static void merge(int lo, int mid, int hi, int[] A) {
         int[] left = Arrays.copyOfRange(A, lo, mid + 1);
