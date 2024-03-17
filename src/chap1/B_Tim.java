@@ -33,43 +33,49 @@ public class B_Tim {
         * N = 10인 경우 8씩 끊으면 1 ~ 8, 9 ~ 10이 됨
         * min 함수를 이용하여 9 ~ 16 까지가 아닌 9 ~ 10 까지 선택 정렬을 진행*/
         for (int i = 0; i < N; i += DIVISION_SIZE) {
-            insert(i, Math.min(i + DIVISION_SIZE - 1, N), A);
+            insert(i, Math.min(i + DIVISION_SIZE - 1, N - 1), A);
         }
 
         /* 분할 된 배열에 대해 합병 정렬 진행
         * size : 분할 된 배열을 합병하는 기준 값*/
-        for (int size = DIVISION_SIZE; size < N; size = 2 * size) {
+        for (int size = DIVISION_SIZE; size < N; size *= 2) {
             for (int left = 0; left < N; left += 2 * size) {
-                int right = Math.min(left + 2 * size - 1, N);
+                int mid = left + size - 1;
+                int right = Math.min((left + 2 * size - 1), N - 1);
 
-                merge(left, size, right, A);
+                if (mid < right) merge(left, mid, right, A);
             }
         }
     }
 
     public static void merge(int lo, int mid, int hi, int[] A) {
-        int len1 = mid - lo + 1;
-        int len2 = hi - mid;
+        int[] left = new int[mid - lo + 1];
+        int[] right = new int[hi - mid];
 
-        int[] left = new int[len1];
-        int[] right = new int[len2];
-        System.arraycopy(A, lo, left, 0, len1);
-        System.arraycopy(A, mid + 1, right, 0, len2);
+        for (int i = 0; i < left.length; i++) left[i] = A[lo + i];
+        for (int i = 0; i < right.length; i++) right[i] = A[mid + 1 + i];
 
-        int i = 0, j = 0;
-        int k = lo;
+        int L = 0, R = 0, i = lo;
 
-        while (i < len1 && j < len2) {
-            if (left[i] <= right[j]) A[k++] = left[i++];
-            else A[k++] = right[j++];
+        while (L < left.length && R < right.length) {
+            if (left[L] <= right[R]) {
+                A[i++] = left[L++];
+            } else {
+                A[i++] = right[R++];
+            }
         }
 
-        while (i < len1) A[k++] = left[i++];
-        while (j < len2) A[k++] = right[j++];
+        while (L < left.length) {
+            A[i++] = left[L++];
+        }
+
+        while (R < right.length) {
+            A[i++] = right[R++];
+        }
     }
 
     public static void insert(int lo, int hi, int[] A) {
-        for (int i = lo + 1; i < hi; i++) {
+        for (int i = lo + 1; i <= hi; i++) {
             int temp = A[i];
             int j = i - 1;
 

@@ -44,8 +44,11 @@ public class B_Merge {
     }
 
     public static void merge(int lo, int mid, int hi, int[] A) {
-        int[] left = Arrays.copyOfRange(A, lo, mid + 1);
-        int[] right = Arrays.copyOfRange(A, mid + 1, hi + 1);
+        int[] left = new int[mid - lo + 1];
+        int[] right = new int[hi - mid];
+
+        for (int i = 0; i < left.length; i++) left[i] = A[lo + i];
+        for (int i = 0; i < right.length; i++) right[i] = A[mid + 1 + i];
 
         int L = 0, R = 0, i = lo;
 
