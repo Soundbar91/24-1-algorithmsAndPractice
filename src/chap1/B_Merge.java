@@ -49,7 +49,7 @@ public class B_Merge {
 
         int L = 0, R = 0, i = lo;
 
-        while (L < mid - lo + 1 && R < hi - mid) {
+        while (L < left.length && R < right.length) {
             if (left[L] <= right[R]) {
                 A[i++] = left[L++];
             } else {
@@ -57,11 +57,11 @@ public class B_Merge {
             }
         }
 
-        while (L < mid - lo + 1) {
+        while (L < left.length) {
             A[i++] = left[L++];
         }
 
-        while (R < hi - mid) {
+        while (R < right.length) {
             A[i++] = right[R++];
         }
     }

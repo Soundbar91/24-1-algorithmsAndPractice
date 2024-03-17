@@ -1,11 +1,10 @@
 package chap1;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class B_Tim {
-    final static int SIZE = 8;
+    final static int DIVISION_SIZE = 8;     // 분할의 크기
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -14,14 +13,14 @@ public class B_Tim {
 
         while (T-- > 0) {
             int N = Integer.parseInt(br.readLine());
-            int[] numArr = new int[N + 1];
+            int[] numArr = new int[N];
 
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int i = 1; i <= N; i++) numArr[i] = Integer.parseInt(st.nextToken());
+            for (int i = 0; i < N; i++) numArr[i] = Integer.parseInt(st.nextToken());
 
-            TimSort(numArr, N);
+            TimSort(N, numArr);
 
-            for (int i = 1; i <= N; i++) sb.append(numArr[i]).append(' ');
+            for (int i = 0; i < N; i++) sb.append(numArr[i]).append(' ');
             sb.append('\n');
         }
 
@@ -29,52 +28,44 @@ public class B_Tim {
         br.close();
     }
 
-    public static void TimSort(int lo, int hi, int[] A) {
-        
+    public static void TimSort(int N, int[] A) {
+        /* 분할 크기 8씩 끊어서 선택 정렬 진행
+        * N = 10인 경우 8씩 끊으면 1 ~ 8, 9 ~ 10이 됨
+        * min 함수를 이용하여 9 ~ 16 까지가 아닌 9 ~ 10 까지 선택 정렬을 진행*/
+        for (int i = 0; i < N; i += DIVISION_SIZE) {
+            insert(i, Math.min(i + DIVISION_SIZE - 1, N), A);
+        }
 
-//        for (int i = 1; i <= n; i += SIZE) {
-//            insert(i, Math.min(i + SIZE, n), A);
-//        }
-//
-//        for (int i = SIZE; i < n; i *= 2) {
-//            for (int left = 0; left < n; left += 2 * i) {
-//                int mid = left + i - 1;
-//                int right = Math.min(left + 2 * i - 1, n - 1);
-//                merge(left, mid, right, A);
-//            }
-//        }
-//    }
-//
-//    public static void mergeSort(int lo, int hi, int[] A) {
-//        if (lo < hi) {
-//            int mid = lo + (hi - lo) / 2;
-//            mergeSort(lo, mid, A);
-//            mergeSort(mid + 1, hi, A);
-//            merge(lo, mid, hi, A);
-//        }
-//    }
+        /* 분할 된 배열에 대해 합병 정렬 진행
+        * size : 분할 된 배열을 합병하는 기준 값*/
+        for (int size = DIVISION_SIZE; size < N; size = 2 * size) {
+            for (int left = 0; left < N; left += 2 * size) {
+                int right = Math.min(left + 2 * size - 1, N);
 
-    public static void merge(int lo, int mid, int hi, int[] A) {
-        int[] left = Arrays.copyOfRange(A, lo, mid + 1);
-        int[] right = Arrays.copyOfRange(A, mid + 1, hi + 1);
-
-        int L = 0, R = 0, i = lo;
-
-        while (L < mid - lo + 1 && R < hi - mid) {
-            if (left[L] <= right[R]) {
-                A[i++] = left[L++];
-            } else {
-                A[i++] = right[R++];
+                merge(left, size, right, A);
             }
         }
+    }
 
-        while (L < mid - lo + 1) {
-            A[i++] = left[L++];
+    public static void merge(int lo, int mid, int hi, int[] A) {
+        int len1 = mid - lo + 1;
+        int len2 = hi - mid;
+
+        int[] left = new int[len1];
+        int[] right = new int[len2];
+        System.arraycopy(A, lo, left, 0, len1);
+        System.arraycopy(A, mid + 1, right, 0, len2);
+
+        int i = 0, j = 0;
+        int k = lo;
+
+        while (i < len1 && j < len2) {
+            if (left[i] <= right[j]) A[k++] = left[i++];
+            else A[k++] = right[j++];
         }
 
-        while (R < hi - mid) {
-            A[i++] = right[R++];
-        }
+        while (i < len1) A[k++] = left[i++];
+        while (j < len2) A[k++] = right[j++];
     }
 
     public static void insert(int lo, int hi, int[] A) {
