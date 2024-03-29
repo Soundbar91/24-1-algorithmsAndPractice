@@ -35,6 +35,12 @@ public class E {
         br.close();
     }
 
+    /*
+     * 배열에 저장된 값에서 하나씩 뽑아 M에서 차감
+     * M이 음수가 되면 해당 경우는 x
+     * M이 0이 되면 해당 경우는 성립하므로, 새로운 LinkedList를 반환.
+     * 이후, 밑에서 위로 올라가면서 값을 리스트에 추가
+     * 재귀로 받은 리스트의 길이가 결과값 리스트보다 길거나, 결과값 리스트가 널인 경우 갱신*/
     public static List<Integer> solve(int M, int[] A) {
         if (M < 0) return null;
         if (M == 0) return new LinkedList<>();

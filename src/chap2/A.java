@@ -62,6 +62,11 @@ public class A {
             int x = point[0];
             int y = point[1];
 
+            /*
+            * 게임 판에 넣을 수 있는 모양 검사
+            * 만약 넣을 수 있는 모양이 있으면 해당 좌표 값 변경
+            * 값 변경 후 재귀 호출
+            * 재귀가 끝나면 다시 원래 값으로 변경*/
             for (int n = 0; n < 4; n++) {
                 if (check(x, y, n, H, W, map, dx, dy)) {
                     flip(x, y, n, '#', map, dx, dy);

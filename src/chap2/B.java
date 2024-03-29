@@ -26,6 +26,9 @@ public class B {
         br.close();
     }
 
+    /*입력 받은 배열에 저장된 값을 순차적으로 가져와 M에서 뺀다.
+    * 만약, 음수로 떨어지면 해당 경우의 수는 x
+    * 뺀 M의 값이 0이 되면 입력한 배열에서 숫자를 뽑아 합을 구할 수 있다는 뜻*/
     public static boolean solve(int M, int[] A) {
         if (M < 0) return false;
         else if (M == 0) return true;

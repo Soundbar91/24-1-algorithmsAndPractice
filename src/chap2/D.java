@@ -26,6 +26,11 @@ public class D {
         br.close();
     }
 
+    /*
+     * 배열에 저장된 값에서 하나씩 뽑아 M에서 차감
+     * M이 음수가 되면 해당 경우는 x -> 0를 반환
+     * M이 0이 되면 해당 경우는 성립하므로 1를 반환
+     * 재귀로부터 반환받은 값을 count 변수에 더하고 반환*/
     public static int solve(int M, int[] A) {
         if (M < 0) return 0;
         if (M == 0) return 1;

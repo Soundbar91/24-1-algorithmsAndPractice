@@ -18,6 +18,7 @@ public class F {
             int[] numArr = new int[10];
 
             st = new StringTokenizer(br.readLine());
+//            빈도수 배열을 사용하여 3 초과가 되지 않도록 한다.
             for (int i = 0; i < N; i++) {
                 int value = Integer.parseInt(st.nextToken());
 
@@ -35,7 +36,10 @@ public class F {
         br.close();
     }
 
-    // 빈도수 배열을 사용하여 중복 제거
+    /*
+    * depth : 자리수
+    * 자리수에 맞지 않는 값이 왔을 경우를 제외한 경우에 대해 함수 재귀 호출
+    * 재귀가 끝났다면 차감시켰던 값을 증감 */
    public static List<Integer> solve(int[] A, int depth, String str, List<Integer> result) {
         if (depth == 3) {
             result.add(Integer.parseInt(str));
