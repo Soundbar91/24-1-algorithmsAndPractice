@@ -1,44 +1,50 @@
 package chap3;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class B {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         int T = Integer.parseInt(br.readLine());
 
         while (T-- > 0) {
-            char[] S = br.readLine().toCharArray();
+            String S = br.readLine();
             int k = Integer.parseInt(br.readLine());
 
-            int[] freq = new int[27];
-            for (char c : S) freq[c - 'a']++;
-
-            System.out.println(solve(k, 0, S.length - 1, freq, S));
+            System.out.println(solve(S, k, 0, S.length() - 1));
         }
 
         br.close();
     }
 
-    public static int solve(int k, int lo, int hi, int[] freq, char[] S) {
-        if (lo >= hi) return 0;
+    public static int solve(String S, int k, int lo, int hi) {
+        if (lo > hi) return 0;
+
+        int[] freq = new int[26];
+
+        for (int i = lo; i <= hi; i++) freq[S.charAt(i) - 'a']++;
 
         boolean flag = false;
-        int result = 0;
+        int index = 0;
 
-        for (int i = 0; i < S.length; i++) {
-            if (freq[S[i] - 'a'] < k) {
-                char[] right = Arrays.copyOfRange(S, i + 1, hi + 1);
-                int rightLen = solve(k, i + 1, right.length - 1, freq, right);
-
-                result = Math.max(i, rightLen);
+        /*
+        * 문자열 S에서 k 이하 등장하는 인덱스를 검사
+        * 등장하지 않으면 문자열 길이 반환
+        * 등장하면 인덱스 저장 후 탈출*/
+        for (int i = lo; i <= hi; i++) {
+            if (freq[S.charAt(i) - 'a']< k) {
                 flag = true;
+                index = i;
                 break;
             }
         }
 
-        return flag? result : S.length;
+        if (!flag) return hi - lo + 1;
+
+        // k 이하 등장하는 문자 기준으로 왼쪽, 오른쪽 분할하여 재귀 호출
+        int left = solve(S, k, lo, index - 1);
+        int right = solve(S, k, index + 1, hi);
+
+        return Math.max(left, right);
     }
 }

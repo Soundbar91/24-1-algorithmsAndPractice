@@ -26,6 +26,7 @@ public class A {
     public static int mergeSort(int lo, int hi, int[] A) {
         int result = 0;
 
+        // 왼쪽, 오른족 분할
         if (lo < hi) {
             int mid = lo + (hi - lo) / 2;
             result += mergeSort(lo, mid, A);
@@ -47,6 +48,11 @@ public class A {
                 A[i++] = left[L++];
             }
             else {
+                /*
+                * 왼쪽 값이 더 큰 경우 역쌍
+                * 왼쪽 배열에 있는 왼쪽 값의 기준으로 위에 있는 값들은 오른쪽 값보다 큼
+                * 정렬된 배열이기 때문
+                * 왼쪽 배열의 길이에서 왼쪽 값 인덱스를 빼게 되면 오른쪽 값보다 큰 값의 개수를 구할 수 있다.*/
                 A[i++] = right[R++];
                 result += left.length - L;
             }
