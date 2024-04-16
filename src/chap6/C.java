@@ -23,8 +23,9 @@ public class C {
         br.close();
     }
 
-    public static void solve(int[] A) throws IOException {
-        int median = Rselect(A, A.length / 2);
+    public static void solve(int[] A) {
+        StringBuilder sb = new StringBuilder();
+        int median = RSelect(A, 0, A.length - 1, A.length / 2);
 
         int[] result = new int[A.length];
         int lo = 0, hi = A.length - 1;
@@ -39,15 +40,10 @@ public class C {
         lo = (A.length + 1) / 2;
         hi = A.length;
 
-        for (int i = 0; i < A.length; i++) {
-            A[i] = (i % 2 == 0) ? result[--lo] : result[--hi];
-        }
+        sb.append(A.length).append('\n');
+        for (int i = 0; i < A.length; i++) sb.append((i % 2 == 0) ? result[--lo] + " " : result[--hi] + " ");
 
-        printArray(A);
-    }
-
-    public static int Rselect(int[] A, int i) {
-        return RSelect(A, 0, A.length - 1, i);
+        System.out.println(sb);
     }
 
     public static int RSelect(int[] A, int lo, int hi, int i) {
@@ -71,9 +67,9 @@ public class C {
         int L = lo + 1;
         int R = hi;
 
-        while(L <= R) {
-            while(L <= R && A[L] <= pivot) ++L;
-            while(L <= R && A[R] > pivot) --R;
+        while (L <= R) {
+            while (L <= R && A[L] <= pivot) ++L;
+            while (L <= R && A[R] > pivot) --R;
             if (L < R) swap(A, L++, R--);
         }
 
@@ -85,15 +81,5 @@ public class C {
         int temp = A[L];
         A[L] = A[R];
         A[R] = temp;
-    }
-
-    public static void printArray(int[] A) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(A.length).append('\n');
-        for (int i : A) sb.append(i).append(' ');
-        bw.write(sb + "\n");
-        bw.flush();
     }
 }
