@@ -27,10 +27,6 @@ public class B {
         boolean flag = false;
         int index = 0;
 
-        /*
-        * 문자열 S에서 k 이하 등장하는 인덱스를 검사
-        * 등장하지 않으면 문자열 길이 반환
-        * 등장하면 인덱스 저장 후 탈출*/
         for (int i = lo; i <= hi; i++) {
             if (freq[S.charAt(i) - 'a']< k) {
                 flag = true;
@@ -41,7 +37,6 @@ public class B {
 
         if (!flag) return hi - lo + 1;
 
-        // k 이하 등장하는 문자 기준으로 왼쪽, 오른쪽 분할하여 재귀 호출
         int left = solve(S, k, lo, index - 1);
         int right = solve(S, k, index + 1, hi);
 

@@ -16,7 +16,7 @@ public class FindShortPathGreed {
 
         @Override
         public int compareTo(Point other) {
-            return Integer.compare(this.sum, other.sum);
+            return this.sum - other.sum;
         }
     }
 

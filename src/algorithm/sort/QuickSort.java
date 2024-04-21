@@ -37,14 +37,12 @@ public class QuickSort {
     }
 
     public static int partition(int[] A, int lo, int hi) {
-        // 배열 범위 내에서 랜덤으로 피벗 인덱스를 생성한다.
         int index = (int) (Math.random() * (hi - lo + 1)) + lo;
         int pivot = A[index];
 
         int L = lo + 1;
         int R = hi;
 
-        // 랜덤 피봇을 왼쪽에 위치 시킨다.
         swap(A, lo, index);
 
         while(L <= R) {

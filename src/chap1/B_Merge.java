@@ -7,33 +7,25 @@ import java.util.StringTokenizer;
 public class B_Merge {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
 
         int T = Integer.parseInt(br.readLine());
 
         while (T-- > 0) {
             int N = Integer.parseInt(br.readLine());
-            int[] numArr = new int[N + 1];
+            int[] numArr = new int[N];
 
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int i = 1; i <= N; i++) numArr[i] = Integer.parseInt(st.nextToken());
+            for (int i = 0; i < N; i++) numArr[i] = Integer.parseInt(st.nextToken());
 
-            mergeSort(1, N, numArr);
+            mergeSort(0, N - 1, numArr);
 
-            for (int i = 1; i <= N; i++) sb.append(numArr[i]).append(' ');
-
-            sb.append('\n');
+            for (int i = 0; i < N; i++) System.out.print(numArr[i] + " ");
+            System.out.println();
         }
 
-        // 배열의 공간 복잡도 O(N), 재귀 함수의 깊이 O(log n) -> 병합 정렬의 공간 복잡도 : O(nlog n)
-        System.out.print(sb);
         br.close();
     }
 
-    /*
-    * 재귀함수의 깊이(레벨)는 공간 복잡도에 영향을 미친다.
-    * 8 -> 4 -> 2 -> 1 크기가 줄어 들 때 마다 각 깊이에서는 2^n번의 함수가 재귀된다.
-    * 여기서 n은 레벨이며, 0부터 시작한다. 최대 레벨은 log(n) + 1이다.*/
     public static void mergeSort(int lo, int hi, int[] A) {
         if (lo < hi) {
             int mid = lo + (hi - lo) / 2;
@@ -44,28 +36,17 @@ public class B_Merge {
     }
 
     public static void merge(int lo, int mid, int hi, int[] A) {
-        int[] left = new int[mid - lo + 1];
-        int[] right = new int[hi - mid];
-
-        for (int i = 0; i < left.length; i++) left[i] = A[lo + i];
-        for (int i = 0; i < right.length; i++) right[i] = A[mid + 1 + i];
+        int[] left = Arrays.copyOfRange(A, lo, mid + 1);
+        int[] right = Arrays.copyOfRange(A, mid + 1, hi + 1);
 
         int L = 0, R = 0, i = lo;
 
         while (L < left.length && R < right.length) {
-            if (left[L] <= right[R]) {
-                A[i++] = left[L++];
-            } else {
-                A[i++] = right[R++];
-            }
+            if (left[L] <= right[R]) A[i++] = left[L++];
+            else A[i++] = right[R++];
         }
 
-        while (L < left.length) {
-            A[i++] = left[L++];
-        }
-
-        while (R < right.length) {
-            A[i++] = right[R++];
-        }
+        while (L < left.length) A[i++] = left[L++];
+        while (R < right.length) A[i++] = right[R++];
     }
 }

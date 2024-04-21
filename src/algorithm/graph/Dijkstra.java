@@ -62,8 +62,6 @@ public class Dijkstra {
                 }
             }
         }
-
-        print();
     }
 
     public static void print() {

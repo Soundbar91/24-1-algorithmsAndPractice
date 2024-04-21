@@ -1,14 +1,33 @@
 package algorithm.select;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RSelect {
-    public static void main(String[] args) {
-        int[] numArr = new int[]{7, 14, 1, 8, 10, 12, 9};
-        System.out.print(RSelect(numArr, 0, numArr.length - 1, (numArr.length + 1) / 2, 0));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+
+        while (T-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+            int N = Integer.parseInt(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
+            int[] nums = new int[N];
+
+            st = new StringTokenizer(br.readLine());
+            for (int i = 0; i < N; i++) nums[i] = Integer.parseInt(st.nextToken());
+
+            System.out.println(RSelect(nums,0, N - 1, k - 1));
+        }
+
+        br.close();
     }
 
-    public static int RSelect(int[] A, int lo, int hi, int i, int depth) {
+    public static int RSelect(int[] A, int lo, int hi, int i) {
         if (lo == hi) return A[lo];
 
         int pivotLoc = chooseRandomPivot(lo, hi);
@@ -17,8 +36,8 @@ public class RSelect {
         pivotLoc = partition(A, lo, hi);
 
         if (i == pivotLoc) return A[pivotLoc];
-        else if (i < pivotLoc) return RSelect(A, lo, pivotLoc - 1, i, depth + 1);
-        else return RSelect(A, pivotLoc + 1, hi, i, depth + 1);
+        else if (i < pivotLoc) return RSelect(A, lo, pivotLoc - 1, i);
+        else return RSelect(A, pivotLoc + 1, hi, i);
     }
 
     public static int partition(int[] A, int lo, int hi) {

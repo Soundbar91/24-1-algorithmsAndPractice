@@ -10,43 +10,29 @@ public class FindLongestSubstring {
         int T = Integer.parseInt(br.readLine());
 
         while (T-- > 0) {
-            String S = br.readLine();
+            int[] W = br.readLine().chars().map(c -> c - 'a').toArray();
             int k = Integer.parseInt(br.readLine());
-
-            System.out.println(solve(S, k, 0, S.length() - 1));
+            System.out.println(solve(W, 0, W.length - 1, k));
         }
 
         br.close();
     }
 
-    public static int solve(String S, int k, int lo, int hi) {
-        if (lo > hi) return 0;
-
+    public static int solve(int[] W, int lo, int hi, int k) {
+        final int len = hi - lo + 1;
+        if (len < k) return 0;
         int[] freq = new int[26];
 
-        for (int i = lo; i <= hi; i++) freq[S.charAt(i) - 'a']++;
+        for (int i = lo; i <= hi; ++i) ++freq[W[i]];
 
-        boolean flag = false;
-        int index = 0;
+        int splitLoc = lo;
+        while (splitLoc <= hi && freq[W[splitLoc]] >= k) ++splitLoc;
+        if (splitLoc == hi + 1) return len;
 
-        /*
-        * 문자열 S에서 k 이하 등장하는 인덱스를 검사
-        * 등장하지 않으면 문자열 길이 반환
-        * 등장하면 인덱스 저장 후 탈출*/
-        for (int i = lo; i <= hi; i++) {
-            if (freq[S.charAt(i) - 'a']< k) {
-                flag = true;
-                index = i;
-                break;
-            }
-        }
-
-        if (!flag) return hi - lo + 1;
-
-        // k 이하 등장하는 문자 기준으로 왼쪽, 오른쪽 분할하여 재귀 호출
-        int left = solve(S, k, lo, index - 1);
-        int right = solve(S, k, index + 1, hi);
-
+        int left = solve(W, lo, splitLoc - 1, k);
+        ++splitLoc;
+        while (splitLoc <= hi && freq[W[splitLoc]] < k) ++splitLoc;
+        int right = solve(W, splitLoc, hi, k);
         return Math.max(left, right);
     }
 }

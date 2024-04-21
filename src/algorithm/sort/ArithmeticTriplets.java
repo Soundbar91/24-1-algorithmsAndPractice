@@ -4,9 +4,7 @@ public class ArithmeticTriplets {
     public static int arithmeticTriplets(int[] A, int d) {
         boolean[] N = new boolean[201];
 
-        for (int n : A) {
-            N[n] = true;
-        }
+        for (int n : A) N[n] = true;
 
         int max = A[A.length - 1];
         int count = 0;

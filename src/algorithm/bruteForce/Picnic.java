@@ -3,72 +3,59 @@ package algorithm.bruteForce;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
 public class Picnic {
     static int N;
-    static int K;
-    static int F;
-    static HashSet<Integer>[] friend;
-    static ArrayList<Integer>[] map;
+    static boolean[][] map;
+    static boolean[] visit;
+    static int count;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int T = Integer.parseInt(br.readLine());
 
-        K = Integer.parseInt(st.nextToken());
-        N = Integer.parseInt(st.nextToken());
-        F = Integer.parseInt(st.nextToken());
+        while (T-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
 
-        friend = new HashSet[N + 1];
-        map = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++) {
-            friend[i] = new HashSet<>();
-            map[i] = new ArrayList<>();
-        }
+            map = new boolean[N][N];
+            visit = new boolean[N];
+            count = 0;
 
-        for (int i = 0; i < F; i++) {
             st = new StringTokenizer(br.readLine());
-
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-
-            map[x].add(y);
-            map[y].add(x);
-            friend[x].add(y);
-            friend[y].add(x);
-        }
-
-        solve(1, 0, new int[K]);
-        System.out.print(-1);
-    }
-
-    public static void solve(int start, int cnt, int[] A) {
-        if (cnt == K) {
-            if (valid(A)) {
-                for (int i : A) System.out.println(i);
-                System.exit(0);
+            for (int i = 0; i < M; i++) {
+                int a = Integer.parseInt(st.nextToken());
+                int b = Integer.parseInt(st.nextToken());
+                map[a][b] = map[b][a] = true; // 서로 친구인 학생 표시
             }
-            return ;
-        }
 
-        for (int i = start; i <= N; i++) {
-            if (map[i].size() < K - 1) continue;
-            A[cnt] = i;
-            solve(i + 1, cnt + 1, A);
+            search();
+            System.out.println(count);
         }
     }
 
-    public static boolean valid(int[] A) {
-        for (int i = 0; i < A.length; i++) {
-            for (int j = 0; j < A.length; j++) {
-                if (i == j) continue;
-                if (!friend[A[i]].contains(A[j])) return false;
+    static void search() {
+        int firstFree = -1;
+        for (int i = 0; i < N; ++i) {
+            if (!visit[i]) {
+                firstFree = i;
+                break;
             }
         }
-        return true;
-    }
 
+        if (firstFree == -1) {
+            count++;
+            return;
+        }
+
+        for (int pairWith = firstFree + 1; pairWith < N; ++pairWith) {
+            if (!visit[pairWith] && map[firstFree][pairWith]) {
+                visit[firstFree] = visit[pairWith] = true;
+                search();
+                visit[firstFree] = visit[pairWith] = false;
+            }
+        }
+    }
 }

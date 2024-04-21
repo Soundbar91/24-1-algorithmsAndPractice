@@ -10,61 +10,65 @@ import java.util.StringTokenizer;
 
 public class FindComponentBFS {
     static int N;
-    static int M;
+    static int E;
     static boolean[] visited;
-    static ArrayList<ArrayList<Integer>> componentPath = new ArrayList<>();
-    static ArrayList<ArrayList<Integer>> map = new ArrayList<>();
+    static ArrayList<ArrayList<Integer>> map;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = Integer.parseInt(br.readLine());
-        M = Integer.parseInt(br.readLine());
+        int T = Integer.parseInt(br.readLine());
 
-        visited = new boolean[N + 1];
-        for (int i = 0; i <= N; i++) map.add(new ArrayList<>());
+        while (T-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            E = Integer.parseInt(st.nextToken());
 
-        StringTokenizer st;
-        while (M-- > 0) {
+            visited = new boolean[N];
+            map = new ArrayList<>();
+            for (int i = 0; i < N; i++) map.add(new ArrayList<>());
+
             st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
+            while (st.hasMoreTokens()) {
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
 
-            map.get(x).add(y);
-            map.get(y).add(x);
-        }
-
-        int count = 0;
-        for (int i = 1; i <= N; i++) {
-            if (!visited[i]) {
-                componentPath.add(BFS(i));
-                count++;
+                map.get(x).add(y);
+                map.get(y).add(x);
             }
-        }
 
-        System.out.println(count);
-        for (ArrayList<Integer> path : componentPath) System.out.println(path.toString());
+            int count = 0;
+            int max = Integer.MIN_VALUE;
+
+            for (int i = 0; i < N; i++) {
+                if (!visited[i]) {
+                    max = Math.max(BFS(i), max);
+                    count++;
+                }
+            }
+
+            System.out.println(count + " " + max);
+        }
     }
 
-    public static ArrayList<Integer> BFS(int startPoint) {
+    public static int BFS(int startPoint) {
         Queue<Integer> queue = new LinkedList<>();
-        ArrayList<Integer> path = new ArrayList<>();
         visited[startPoint] = true;
         queue.add(startPoint);
-        path.add(startPoint);
+        int cnt = 0;
 
         while (!queue.isEmpty()) {
             int cur = queue.poll();
+            cnt++;
 
             for (int next : map.get(cur)) {
                 if (!visited[next]) {
                     visited[next] = true;
                     queue.add(next);
-                    path.add(next);
                 }
             }
         }
 
-        return path;
+        return cnt;
     }
 }
