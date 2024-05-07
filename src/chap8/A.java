@@ -26,20 +26,19 @@ public class A {
                 maxDeadline = Math.max(maxDeadline, deadline);
             }
 
-            List<Work> result = solve(maxDeadline, works);
-
-            result.forEach(work -> System.out.print(work.id + " "));
+            solve(maxDeadline, works);
             System.out.println();
         }
         br.close();
     }
 
-    public static List<Work> solve(int maxDeadLine, Work[] works) {
+    public static void solve(int maxDeadLine, Work[] works) {
         boolean[] visited = new boolean[maxDeadLine + 1];
         List<Work> result = new ArrayList<>();
 
         Arrays.sort(works, (w1, w2) -> Integer.compare(w2.P, w1.P));
 
+        // 스케줄이 가능한 경우 리스트에 추가한다.
         for (Work work : works) {
             if (valid(work.D, visited)) {
                 result.add(work);
@@ -47,12 +46,12 @@ public class A {
         }
 
         result.sort(Comparator.comparingInt(w -> w.id));
-
-        return result;
+        result.forEach(work -> System.out.print(work.id + " "));
     }
 
-    public static boolean valid(int start, boolean[] visited) {
-        for (int i = start; i > 0; i--) {
+    // 마감시간부터 내려가 스케줄이 가능한 시간대를 찾는다.
+    public static boolean valid(int end, boolean[] visited) {
+        for (int i = end; i > 0; i--) {
             if (!visited[i]) {
                 visited[i] = true;
                 return true;

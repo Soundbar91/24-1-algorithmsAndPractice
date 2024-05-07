@@ -24,16 +24,17 @@ public class C {
         br.close();
     }
 
+    /*
+    * 사탕 가격을 오름차순 정렬 후 낮은 가격의 사탕부터 구매한다. */
     public static int solve(int M, int[] P) {
         Arrays.sort(P);
-        if (P[0] > M) return 0;
 
         int result = 0;
 
         for (int pay : P) {
             if (pay > M) break;
             else {
-                result ++;
+                result++;
                 M -=pay;
             }
         }
