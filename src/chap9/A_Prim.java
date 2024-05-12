@@ -3,10 +3,7 @@ package chap9;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class A_Prim {
     public static void main(String[] args) throws IOException {
@@ -19,8 +16,10 @@ public class A_Prim {
             int N = Integer.parseInt(st.nextToken());
             int E = Integer.parseInt(st.nextToken());
 
-            List<Node>[] map = new List[N];
-            for (int i = 0; i < N; i++) map[i] = new ArrayList<>();
+            List<List<Edge>> map = new ArrayList<>();
+            for (int i = 0; i < N; i++) {
+                map.add(new ArrayList<>());
+            }
 
             st = new StringTokenizer(br.readLine());
             for (int i = 0; i < E; i++) {
@@ -28,49 +27,51 @@ public class A_Prim {
                 int from = Integer.parseInt(st.nextToken());
                 int weight = Integer.parseInt(st.nextToken());
 
-                map[to].add(new Node(from, weight));
-                map[from].add(new Node(to, weight));
+                map.get(to).add(new Edge(from, weight));
+                map.get(from).add(new Edge(to, weight));
             }
 
-            System.out.println(solve(map, N, E));
+            System.out.println(solve(map, 0));
         }
 
         br.close();
     }
 
-    public static int solve(List<Node>[] map, int N, int E) {
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        boolean[] visited = new boolean[N];
-        pq.add(new Node(0, 0));
-        int result = 0;
+    public static long solve(List<List<Edge>> map, int start) {
+        PriorityQueue<Edge> queue = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
+        Set<Integer> visited = new HashSet<>();
+        long result = 0;
 
-        while (!pq.isEmpty()) {
-            Node node = pq.poll();
+        visited.add(start);
+        for (Edge edge : map.get(start)) queue.offer(edge);
 
-            if (visited[node.to]) continue;
-            visited[node.to] = true;
-            result += node.weight;
+        while (!queue.isEmpty()) {
+            Edge cur = queue.poll();
+            int u = cur.v;
+            int weight = cur.weight;
 
-            for (Node next : map[node.to]) {
-                if (!visited[next.to]) pq.add(next);
+            if (visited.contains(u)) continue;
+
+            visited.add(u);
+            result += weight;
+
+            for (Edge next : map.get(u)) {
+                if (!visited.contains(next.v)) {
+                    queue.offer(next);
+                }
             }
         }
 
         return result;
     }
 
-    public static class Node implements Comparable<Node> {
-        int to;
+    static class Edge {
+        int v;
         int weight;
 
-        public Node(int to, int weight) {
-            this.to = to;
+        public Edge(int v, int weight) {
+            this.v = v;
             this.weight = weight;
-        }
-
-        @Override
-        public int compareTo(Node o) {
-            return weight - o.weight;
         }
     }
 }

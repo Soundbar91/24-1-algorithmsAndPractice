@@ -42,9 +42,11 @@ public class A_Kruskal {
         long result = 0;
         int cnt = 0;
 
+        // 부모 노드가 같지 않는 경우에만 union 연산을 한다.
         for (Node node : list) {
-            if (union(node.from, node.to, parents)) {
+            if (find(node.from, parents) != find(node.to, parents)) {
                 result += node.wight;
+                union(node.from, node.to, parents);
                 if (cnt++ == E - 1) break;
             }
         }
@@ -57,16 +59,11 @@ public class A_Kruskal {
         else return find(parents[x], parents);
     }
 
-    public static boolean union(int x, int y, int[] parents) {
+    public static void union(int x, int y, int[] parents) {
         int rx = find(x, parents);
         int ry = find(y, parents);
 
-        if (rx == ry) return false;
-        else {
-            if (rx < ry) parents[ry] = rx;
-            else parents[rx] = ry;
-        }
-        return true;
+        if (rx != ry) parents[ry] = rx;
     }
 
     public static class Node implements Comparable<Node> {
