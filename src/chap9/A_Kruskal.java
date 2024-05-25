@@ -2,6 +2,7 @@ package chap9;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
@@ -21,6 +22,9 @@ public class A_Kruskal {
             int[] parents = new int[N];
             for (int i = 0; i < N; i++) parents[i] = i;
 
+            int[] size = new int[parents.length];
+            Arrays.fill(size, 1);
+
             st = new StringTokenizer(br.readLine());
 
             for (int i = 0; i < E; i++) {
@@ -31,23 +35,22 @@ public class A_Kruskal {
                 list.add(new Node(A, B, C));
             }
 
-            System.out.println(solve(list, parents, E));
+            System.out.println(solve(list, parents, size, E));
         }
 
         br.close();
     }
 
-    public static long solve(ArrayList<Node> list, int[] parents, int E) {
+    public static long solve(ArrayList<Node> list, int[] parents, int[] size, int E) {
         Collections.sort(list);
         long result = 0;
-        int cnt = 0;
+        int count = 0;
 
         // 부모 노드가 같지 않는 경우에만 union 연산을 한다.
         for (Node node : list) {
-            if (find(node.from, parents) != find(node.to, parents)) {
+            if (union(node.from, node.to, parents, size)) {
                 result += node.wight;
-                union(node.from, node.to, parents);
-                if (cnt++ == E - 1) break;
+                if (count++ == E - 1) break;
             }
         }
 
@@ -59,11 +62,24 @@ public class A_Kruskal {
         else return find(parents[x], parents);
     }
 
-    public static void union(int x, int y, int[] parents) {
+    public static boolean union(int x, int y, int[] parents, int[] size) {
         int rx = find(x, parents);
         int ry = find(y, parents);
 
-        if (rx != ry) parents[ry] = rx;
+        if (rx != ry) {
+            if (size[rx] >= size[ry]) {
+                parents[ry] = rx;
+                size[rx] += size[ry];
+                size[y] = 0;
+            }
+            else {
+                parents[ry] = rx;
+                size[rx] += size[y];
+                size[y] = 0;
+            }
+            return true;
+        }
+        return false;
     }
 
     public static class Node implements Comparable<Node> {

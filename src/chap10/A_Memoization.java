@@ -21,7 +21,7 @@ public class A_Memoization {
                         .mapToInt(Integer::parseInt)
                         .toArray();
 
-            System.out.println(solve(M, N, nums, new HashMap<Integer, Boolean>()));
+            System.out.println(solve(M, N, nums, new HashMap<>()));
         }
 
         br.close();

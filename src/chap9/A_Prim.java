@@ -17,9 +17,7 @@ public class A_Prim {
             int E = Integer.parseInt(st.nextToken());
 
             List<List<Edge>> map = new ArrayList<>();
-            for (int i = 0; i < N; i++) {
-                map.add(new ArrayList<>());
-            }
+            for (int i = 0; i < N; i++) map.add(new ArrayList<>());
 
             st = new StringTokenizer(br.readLine());
             for (int i = 0; i < E; i++) {
@@ -38,7 +36,7 @@ public class A_Prim {
     }
 
     public static long solve(List<List<Edge>> map, int start) {
-        PriorityQueue<Edge> queue = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
+        Queue<Edge> queue = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
         Set<Integer> visited = new HashSet<>();
         long result = 0;
 

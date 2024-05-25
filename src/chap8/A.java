@@ -36,7 +36,7 @@ public class A {
         boolean[] visited = new boolean[maxDeadLine + 1];
         List<Work> result = new ArrayList<>();
 
-        Arrays.sort(works, (w1, w2) -> Integer.compare(w2.P, w1.P));
+        Arrays.sort(works, null);
 
         // 스케줄이 가능한 경우 리스트에 추가한다.
         for (Work work : works) {
@@ -60,7 +60,7 @@ public class A {
         return false;
     }
 
-    public static class Work{
+    public static class Work implements Comparable<Work> {
         int id;
         int D;
         int P;
@@ -69,6 +69,11 @@ public class A {
             this.id = id;
             D = d;
             P = p;
+        }
+
+        @Override
+        public int compareTo(Work o) {
+            return o.P - P;
         }
     }
 }

@@ -22,20 +22,20 @@ public class A_Tabulation {
                     .mapToInt(Integer::parseInt)
                     .toArray();
 
-            System.out.println(solve(M, N, nums));
+            System.out.println(solve(M, nums));
         }
 
         br.close();
     }
 
-    public static boolean solve(int M, int N, int[] nums) {
+    public static boolean solve(int M, int[] nums) {
         boolean[] visited = new boolean[M + 1];
         visited[0] = true;
 
         for (int i = 0; i < M; i++) {
             if (visited[i]) {
-                for (int j = 0; j < N; j++) {
-                    if (i + nums[j] <= M) visited[i + nums[j]] = true;
+                for (int num : nums) {
+                    if (i + num <= M) visited[i + num] = true;
                 }
             }
         }

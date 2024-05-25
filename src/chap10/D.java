@@ -18,7 +18,8 @@ public class D {
             Item[] items = new Item[N + 1];
 
             st = new StringTokenizer(br.readLine());
-            for (int i = 1; i <= N; i++) items[i] = new Item(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+            for (int i = 1; i <= N; i++)
+                items[i] = new Item(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
 
             System.out.println(solve(W, N, items));
         }
@@ -27,16 +28,15 @@ public class D {
     }
 
     public static int solve(int W, int N, Item[] items) {
-        int[][] dp = new int[N + 1][W + 1];
+        int[] dp = new int[W + 1];
 
         for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= W; j++) {
-                if (j >= items[i].weight) dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - items[i].weight] + items[i].value);
-                else dp[i][j] = dp[i - 1][j];
+            for (int j = W; j >= items[i - 1].weight; j--) {
+                dp[j] = Math.max(dp[j], dp[j - items[i - 1].weight] + items[i - 1].value);
             }
         }
 
-        return dp[N][W];
+        return dp[W];
     }
 
     public static class Item {
