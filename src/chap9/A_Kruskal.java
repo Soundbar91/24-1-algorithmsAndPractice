@@ -1,10 +1,7 @@
 package chap9;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class A_Kruskal {
     public static void main(String[] args) throws IOException {
@@ -14,7 +11,7 @@ public class A_Kruskal {
 
         while (T-- > 0) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            ArrayList<Node> list = new ArrayList<>();
+            List<Node> list = new ArrayList<>();
 
             int N = Integer.parseInt(st.nextToken());
             int E = Integer.parseInt(st.nextToken());
@@ -41,7 +38,7 @@ public class A_Kruskal {
         br.close();
     }
 
-    public static long solve(ArrayList<Node> list, int[] parents, int[] size, int E) {
+    public static long solve(List<Node> list, int[] parents, int[] size, int E) {
         Collections.sort(list);
         long result = 0;
         int count = 0;

@@ -37,10 +37,10 @@ public class A_Prim {
 
     public static long solve(List<List<Edge>> map, int start) {
         Queue<Edge> queue = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
-        Set<Integer> visited = new HashSet<>();
-        long result = 0;
+        boolean[] visited = new boolean[map.size()];
+        long[] score = new long[map.size()];
 
-        visited.add(start);
+        visited[start] = true;
         for (Edge edge : map.get(start)) queue.offer(edge);
 
         while (!queue.isEmpty()) {
@@ -48,19 +48,19 @@ public class A_Prim {
             int u = cur.v;
             int weight = cur.weight;
 
-            if (visited.contains(u)) continue;
+            if (visited[u]) continue;
 
-            visited.add(u);
-            result += weight;
+            visited[u] = true;
+            score[u] += weight;
 
             for (Edge next : map.get(u)) {
-                if (!visited.contains(next.v)) {
+                if (!visited[next.v]) {
                     queue.offer(next);
                 }
             }
         }
 
-        return result;
+        return Arrays.stream(score).sum();
     }
 
     static class Edge {
